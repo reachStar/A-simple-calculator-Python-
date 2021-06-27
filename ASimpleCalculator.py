@@ -118,7 +118,10 @@ class MainUi(QtWidgets.QMainWindow):
 		self.button_10x = QtWidgets.QPushButton("10^x")
 		self.button_DIV = QtWidgets.QPushButton("÷")
 		self.button_EQU = QtWidgets.QPushButton("=")
-
+		self.button_OctalNumber = QtWidgets.QPushButton("8进制")
+		self.button_Hexadecimal = QtWidgets.QPushButton("16进制")
+		self.button_Binary=QtWidgets.QPushButton("2进制")
+		self.button_Decimal=QtWidgets.QPushButton("10进制")
 		
 
 
@@ -173,24 +176,29 @@ class MainUi(QtWidgets.QMainWindow):
 		self.right_bar_layout.addWidget(self.button_9,4,2,1,1)
 		self.right_bar_layout.addWidget(self.button_ADD,4,3,1,1)
 		self.right_bar_layout.addWidget(self.button_LOG,4,4,1,1)
+		self.right_bar_layout.addWidget(self.button_Decimal,4,5,1,1)
+
 
 		self.right_bar_layout.addWidget(self.button_4,5,0,1,1)
 		self.right_bar_layout.addWidget(self.button_5,5,1,1,1)
 		self.right_bar_layout.addWidget(self.button_6,5,2,1,1)
 		self.right_bar_layout.addWidget(self.button_SUB,5,3,1,1)
 		self.right_bar_layout.addWidget(self.button_DEL,5,4,1,1)
+		self.right_bar_layout.addWidget(self.button_Binary,5,5,1,1)
 
 		self.right_bar_layout.addWidget(self.button_1,6,0,1,1)
 		self.right_bar_layout.addWidget(self.button_2,6,1,1,1)
 		self.right_bar_layout.addWidget(self.button_3,6,2,1,1)
 		self.right_bar_layout.addWidget(self.button_MUL,6,3,1,1)
 		self.right_bar_layout.addWidget(self.button_AC,6,4,1,1)
+		self.right_bar_layout.addWidget(self.button_OctalNumber,6,5,1,1)
 		
 		self.right_bar_layout.addWidget(self.button_0,7,0,1,1)
 		self.right_bar_layout.addWidget(self.button_DOT,7,1,1,1)
 		self.right_bar_layout.addWidget(self.button_10x,7,2,1,1)
 		self.right_bar_layout.addWidget(self.button_DIV,7,3,1,1)
-		self.right_bar_layout.addWidget(self.button_EQU,7,4,1,1)		
+		self.right_bar_layout.addWidget(self.button_EQU,7,4,1,1)	
+		self.right_bar_layout.addWidget(self.button_Hexadecimal,7,5,1,1)	
 
 		self.right_bar_layout2.addWidget
 
@@ -205,11 +213,6 @@ class MainUi(QtWidgets.QMainWindow):
 		self.right_recommend_widget = QtWidgets.QWidget() 
 		self.right_recommend_layout = QtWidgets.QGridLayout()
 		self.right_recommend_widget.setLayout(self.right_recommend_layout)
-
-
-
-
-
 
 
 
@@ -272,6 +275,62 @@ class MainUi(QtWidgets.QMainWindow):
 	
 '''
 )
+		self.button_Decimal.setStyleSheet(
+				'''
+	
+	QPushButton{
+		font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+		background-color: rgb(220,220,220);
+		width:120px;
+		padding:2px 4px;
+		max-height:    25px;
+	}
+	
+'''
+)
+
+		self.button_Binary.setStyleSheet(
+				'''
+	
+	QPushButton{
+		font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+		background-color: rgb(220,220,220);
+		width:120px;
+		padding:2px 4px;
+		max-height:    25px;
+	}
+	
+'''
+)
+
+		self.button_OctalNumber.setStyleSheet(
+			'''
+	
+	QPushButton{
+		font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+		background-color: rgb(220,220,220);
+		width:120px;
+		padding:2px 4px;
+		max-height:    25px;
+	}
+	
+'''
+)
+
+		self.button_Hexadecimal.setStyleSheet(
+			'''
+	
+	QPushButton{
+		font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+		background-color: rgb(220,220,220);
+		width:120px;
+		padding:2px 4px;
+		max-height:    25px;
+	}
+	
+'''
+)
+
 		self.button_RB.setStyleSheet(
 			'''
 	
@@ -747,6 +806,7 @@ class mywindow(MainUi):
 		self.calresult=0
 		self.nowflag=0
 		self.ifcal=1
+		self.results=0
 		super(mywindow, self).__init__()
 		self.button_LB.clicked.connect(self.LB)
 		self.button_RB.clicked.connect(self.RB)
@@ -783,6 +843,12 @@ class mywindow(MainUi):
 		self.button_10x.clicked.connect(self.N10x)
 		self.button_DIV.clicked.connect(self.DIV)
 		self.button_EQU.clicked.connect(self.EQU)
+		self.button_Decimal.clicked.connect(self.Decimal)
+		self.button_Binary.clicked.connect(self.Binary)
+		self.button_OctalNumber.clicked.connect(self.OctalNumber)
+		self.button_Hexadecimal.clicked.connect(self.Hexadecimal)
+
+
 		
 	def MESSAGE(self):
 		reply = QtWidgets.QMessageBox.about(self, '关于', '本产品开发制作者：星辰\n联系方式：邮箱2586211644@qq.com')
@@ -1063,10 +1129,37 @@ class mywindow(MainUi):
 			a=int(self.results)
 		except:
 			self.CalRes.setText('数学错误')
+			self.results='数学错误'
 			return
 		self.CalRes.setText(str(self.results))
 
-		
+	def Decimal(self):
+		self.EQU()
+		self.CalRes.setText("十进制:"+str(self.results))
+	def Binary(self):
+		self.EQU()
+		try:
+			results_tmp=bin(self.results)
+		except:
+			self.CalRes.setText('二进制：数学错误')
+			return
+		self.CalRes.setText("二进制:"+str(results_tmp)[2:])
+	def OctalNumber(self):
+		self.EQU()
+		try:
+			results_tmp=oct(self.results)
+		except:
+			self.CalRes.setText('八进制：数学错误')
+			return
+		self.CalRes.setText("八进制:"+str(results_tmp)[2:])
+	def Hexadecimal(self):
+		self.EQU()
+		try:
+			results_tmp=hex(self.results)
+		except:
+			self.CalRes.setText('十六进制：数学错误')
+			return
+		self.CalRes.setText("十六进制:"+str(results_tmp)[2:])
 		
 	def AC(self):
 		self.calprocess=''
